@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChathuX — Next-Generation Discord Super-Platform</title>
+    <meta name="description" content="ChathuX is an enterprise-grade Discord bot platform featuring AI assistance, advanced auto-moderation, virtual economy, leveling, music streaming, and a glassmorphic dashboard.">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Stylesheets: Supports both Express (port 3000) and Live Server (port 5500) -->
+    <link rel="stylesheet" href="/dashboard/public/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="icon" type="image/png" href="/assets/Logo.png">
+</head>
+<body>
+    <!-- Ambient Floating Orbs -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+                <img src="/assets/Logo.png" alt="ChathuX Logo" width="40" height="40" class="brand-logo-img" style="width: 40px; height: 40px; object-fit: contain;" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <span class="brand-gradient">ChathuX</span>
+            </a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-lg-3">
+                    <li class="nav-item"><a class="nav-link text-white-50" href="/dashboard">Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link text-white-50" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link text-white-50" href="/servers">Manage Servers</a></li>
+                </ul>
+                <div id="nav-auth-container">
+                    <!-- Loaded dynamically by main.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="py-5 text-center position-relative">
+        <div class="container py-4">
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 mb-4 glass-panel rounded-pill shadow-sm">
+                <span class="pulse-indicator"></span>
+                <span style="font-size: 0.85rem; font-weight: 700; color: #00f5d4; letter-spacing: 0.5px;">CHATHUX CLOUD PLATFORM v1.0 ONLINE</span>
+            </div>
+            
+            <h1 class="display-3 fw-bolder mb-3" style="letter-spacing: -2px; line-height: 1.15;">
+                The Ultimate Discord <br><span class="brand-gradient">Super-Platform</span>
+            </h1>
+            
+            <p class="lead text-muted mx-auto mb-5" style="max-width: 720px; font-size: 1.2rem;">
+                Engineered from scratch with decoupled microservices: State-of-the-art AI intelligence, high-frequency auto-mod defense, immersive leveling, a virtual economy, and a real-time glassmorphic dashboard.
+            </p>
+            
+            <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
+                <a href="https://discord.com/oauth2/authorize?client_id=1548035152637329428&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn btn-chathux btn-lg">
+                    <span>⚡ Add ChathuX to Discord</span>
+                </a>
+                <a href="/servers" class="btn btn-outline-glass btn-lg">
+                    <span>🚀 Manage Dashboard</span>
+                </a>
+                <a href="/api/auth/demo" class="btn btn-outline-glass btn-lg" style="border-color: rgba(0, 245, 212, 0.4);">
+                    <span>🎮 Try Instant Demo</span>
+                </a>
+            </div>
+
+            <!-- Banner Showcase Card -->
+            <div class="row justify-content-center mt-3">
+                <div class="col-lg-10">
+                    <div class="hero-banner-container">
+                        <img src="/assets/Bannr.png" alt="ChathuX Banner" class="hero-banner-img" style="max-height: 440px; width: 100%; object-fit: cover;" onerror="this.style.display='none'">
+                        <div class="hero-banner-overlay">
+                            <div>
+                                <span class="badge bg-primary bg-opacity-75 mb-2 px-3 py-2" style="font-size: 0.85rem;">ENTERPRISE ARCHITECTURE</span>
+                                <h3 class="fw-bold mb-1 text-white">ChathuX Cloud Node Engine</h3>
+                                <p class="text-white-50 mb-0">High-concurrency Discord.js v14 Gateway & MySQL Connection Pool</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Counters -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-md-3 col-6">
+                    <div class="glass-card">
+                        <div class="stat-number" id="stat-servers">5</div>
+                        <div class="stat-label">Active Guilds</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-card">
+                        <div class="stat-number" id="stat-members">2,450</div>
+                        <div class="stat-label">Users Protected</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-card">
+                        <div class="stat-number" id="stat-commands">62</div>
+                        <div class="stat-label">Slash Commands</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="glass-card">
+                        <div class="stat-number" id="stat-uptime">14h 32m</div>
+                        <div class="stat-label">Continuous Uptime</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder fs-1" style="letter-spacing: -1px;">Built for World-Class Communities</h2>
+                <p class="text-muted">Explore the multi-module intelligence powering millions of Discord interactions.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">🤖</div>
+                        <h4 class="fw-bold">AI Assistant Suite</h4>
+                        <p class="text-muted">Swappable abstraction supporting Google Gemini & OpenAI with conversation memory, code debugging, and natural Sinhala banter.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">🛡️</div>
+                        <h4 class="fw-bold">Auto-Mod Defense</h4>
+                        <p class="text-muted">Real-time anti-spam burst protection, mention flood defense, phishing URL scanning, and automated timeout strike systems.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">🏆</div>
+                        <h4 class="fw-bold">XP & Rank Cards</h4>
+                        <p class="text-muted">Anti-spam XP cooldown progression, dynamic ASCII rank cards, live leaderboards, and automatic role unlock rewards.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">💰</div>
+                        <h4 class="fw-bold">Virtual Economy</h4>
+                        <p class="text-muted">Daily streak reward multipliers, career shifts (/work), atomic peer transfers (/pay), and customizable server marketplace shops.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">🎵</div>
+                        <h4 class="fw-bold">High-Fi Audio Player</h4>
+                        <p class="text-muted">Voice connection manager powered by @discordjs/voice with song queueing, interactive button controllers, volume, and repeat loops.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="glass-card h-100">
+                        <div class="fs-1 mb-3">📊</div>
+                        <h4 class="fw-bold">Glassmorphism Dashboard</h4>
+                        <p class="text-muted">Modern Discord OAuth2 web interface to configure channels, inspect audit logs, and tune moderation settings instantly from your browser.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 border-top border-secondary border-opacity-25 mt-5">
+        <div class="container text-center text-muted">
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                <img src="/assets/Logo.png" width="28" height="28" style="width: 28px; height: 28px; object-fit: contain;" class="rounded-circle" alt="ChathuX" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <span class="fw-bold text-white">ChathuX Platform</span>
+            </div>
+            <p class="mb-1">© 2026 <strong>ChathuX Engineering</strong> — Production Discord Platform.</p>
+            <small>Crafted with Discord.js v14, Express, MySQL & Cyber Glassmorphism.</small>
+        </div>
+    </footer>
+
+    <!-- Scripts: Supports both Express & Live Server -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/dashboard/public/js/particles.js"></script>
+    <script src="/dashboard/public/js/main.js"></script>
+    <script src="/dashboard/public/js/dashboard.js"></script>
+</body>
+</html>

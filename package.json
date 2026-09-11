@@ -1,0 +1,49 @@
+{
+  "name": "chathux",
+  "version": "1.0.0",
+  "description": "Production-ready, multi-purpose Discord platform featuring AI assistant, moderation, leveling, economy, music, and an Express web dashboard.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "deploy-commands": "node scripts/deployCommands.js",
+    "db:init": "node scripts/initDb.js",
+    "db:migrate": "node scripts/initDb.js",
+    "lint": "node scripts/lint.js"
+  },
+  "keywords": [
+    "discord-bot",
+    "discordjs-v14",
+    "ai",
+    "moderation",
+    "leveling",
+    "economy",
+    "music",
+    "dashboard",
+    "mysql"
+  ],
+  "author": "ChathuX Engineering",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^2.4.0",
+    "@discordjs/voice": "^0.19.2",
+    "@distube/ytdl-core": "^4.16.12",
+    "@noble/ciphers": "^2.4.0",
+    "@stablelib/xchacha20poly1305": "^2.0.1",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "discord-api-types": "^0.37.114",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "ffmpeg-static": "^5.3.0",
+    "libsodium-wrappers": "^0.8.4",
+    "mysql2": "^3.12.0",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

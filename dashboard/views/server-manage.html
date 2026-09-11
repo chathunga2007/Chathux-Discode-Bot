@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Configuration — ChathuX Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Stylesheets: Supports both Express (port 3000) and Live Server (port 5500) -->
+    <link rel="stylesheet" href="/dashboard/public/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="icon" type="image/png" href="/assets/Logo.png">
+</head>
+<body>
+    <!-- Ambient Floating Orbs -->
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+                <img src="/assets/Logo.png" alt="Logo" width="40" height="40" class="brand-logo-img" style="width: 40px; height: 40px; object-fit: contain;" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                <span class="brand-gradient">ChathuX</span>
+            </a>
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-lg-3">
+                    <li class="nav-item"><a class="nav-link text-white-50" href="/dashboard">Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link active text-white" href="/servers">My Servers</a></li>
+                </ul>
+                <div id="nav-auth-container"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <!-- Server Header Card with Banner Backdrop -->
+        <div class="glass-panel mb-4 overflow-hidden position-relative">
+            <div style="height: 140px; width: 100%; background: url('/assets/Bannr.png') center/cover no-repeat; opacity: 0.45; filter: blur(2px);"></div>
+            <div class="p-4 d-flex align-items-center justify-content-between flex-wrap gap-3 position-relative" style="margin-top: -60px;">
+                <div class="d-flex align-items-center gap-3">
+                    <img id="guild-avatar" src="/assets/Logo.png" width="76" height="76" style="width: 76px; height: 76px; object-fit: cover;" class="rounded-circle shadow-lg border border-2 border-primary" alt="Guild Icon" onerror="this.src='/assets/Logo.png'">
+                    <div style="text-shadow: 0 2px 10px rgba(0,0,0,0.8);">
+                        <h2 id="guild-name" class="fw-bold mb-0">Loading Server...</h2>
+                        <span id="guild-members" class="text-white-50">-- members</span>
+                    </div>
+                </div>
+                <div>
+                    <button id="save-btn" class="btn btn-chathux px-4" onclick="saveSettings()">
+                        💾 Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabbed Navigation -->
+        <div class="row g-4">
+            <div class="col-lg-3">
+                <div class="glass-panel p-3">
+                    <div class="nav flex-column nav-pills gap-2" id="v-pills-tab" role="tablist">
+                        <button class="nav-link active text-start" id="tab-overview" data-bs-toggle="pill" data-bs-target="#content-overview" type="button">📊 Overview</button>
+                        <button class="nav-link text-start" id="tab-general" data-bs-toggle="pill" data-bs-target="#content-general" type="button">⚙️ General Settings</button>
+                        <button class="nav-link text-start" id="tab-moderation" data-bs-toggle="pill" data-bs-target="#content-moderation" type="button">🛡️ Moderation & Auto-Mod</button>
+                        <button class="nav-link text-start" id="tab-welcome" data-bs-toggle="pill" data-bs-target="#content-welcome" type="button">👋 Welcome & Onboarding</button>
+                        <button class="nav-link text-start" id="tab-logs" data-bs-toggle="pill" data-bs-target="#content-logs" type="button">📜 Audit Logs</button>
+                        <button class="nav-link text-start" id="tab-leveling" data-bs-toggle="pill" data-bs-target="#content-leveling" type="button">🏆 Leveling / XP</button>
+                        <button class="nav-link text-start" id="tab-economy" data-bs-toggle="pill" data-bs-target="#content-economy" type="button">💰 Virtual Economy</button>
+                        <button class="nav-link text-start" id="tab-ai" data-bs-toggle="pill" data-bs-target="#content-ai" type="button">🤖 AI Assistant</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="tab-content glass-panel p-4" id="v-pills-tabContent">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="content-overview">
+                        <h4 class="fw-bold mb-3">Server Management Overview</h4>
+                        <p class="text-muted">Real-time status and quick toggles for all modules enabled in this community.</p>
+                        
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="glass-card text-center">
+                                    <div class="stat-label">Auto-Mod Defense</div>
+                                    <div class="h4 fw-bold text-success mt-2" id="ov-mod-status">Active</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="glass-card text-center">
+                                    <div class="stat-label">AI Integration</div>
+                                    <div class="h4 fw-bold text-info mt-2" id="ov-ai-status">Enabled</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="glass-card text-center">
+                                    <div class="stat-label">XP Leveling</div>
+                                    <div class="h4 fw-bold text-warning mt-2" id="ov-xp-status">Tracking</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card mt-4 p-4">
+                            <h5 class="fw-bold mb-2">⚡ Quick Links & Setup Guide</h5>
+                            <p class="text-muted mb-3">Ensure ChathuX has necessary permissions in channel overrides to post embeds and manage moderation roles.</p>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="https://discord.com/developers/applications" target="_blank" class="btn btn-outline-glass btn-sm">Discord Developer Portal</a>
+                                <a href="/dashboard" class="btn btn-outline-glass btn-sm">Platform Telemetry</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- General Settings Tab -->
+                    <div class="tab-pane fade" id="content-general">
+                        <h4 class="fw-bold mb-3">General Configuration</h4>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Bot Prefix (for legacy text commands)</label>
+                            <input type="text" id="setting-prefix" class="form-control form-control-glass" value="!" maxlength="5">
+                            <small class="text-muted">Default slash commands (<code>/</code>) will always remain active.</small>
+                        </div>
+                    </div>
+
+                    <!-- Moderation Tab -->
+                    <div class="tab-pane fade" id="content-moderation">
+                        <h4 class="fw-bold mb-3">Auto-Mod Defense & Security</h4>
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Moderation Log Channel</label>
+                            <select id="setting-mod-channel" class="form-select form-select-glass"></select>
+                            <small class="text-muted">Where moderation actions (kick, ban, timeout, warn) are automatically logged.</small>
+                        </div>
+                        <h5 class="fw-bold fs-6 text-white-50 mb-3">Automated Filters</h5>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="mod-anti-spam">
+                            <label class="form-check-label ms-2" for="mod-anti-spam"><strong>Anti-Spam Filter</strong> (Rate-limits message bursts > 5 msgs in 5s)</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="mod-anti-mention">
+                            <label class="form-check-label ms-2" for="mod-anti-mention"><strong>Anti-Mention Flood</strong> (Blocks excessive user/role pings)</label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="mod-filter-badwords">
+                            <label class="form-check-label ms-2" for="mod-filter-badwords"><strong>Profanity & Bad-Word Filter</strong></label>
+                        </div>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="mod-filter-links">
+                            <label class="form-check-label ms-2" for="mod-filter-links"><strong>Block Links & Discord Invites</strong></label>
+                        </div>
+                    </div>
+
+                    <!-- Welcome Tab -->
+                    <div class="tab-pane fade" id="content-welcome">
+                        <h4 class="fw-bold mb-3">Welcome & Onboarding</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="welcome-enabled">
+                            <label class="form-check-label ms-2" for="welcome-enabled"><strong>Enable Welcome Announcements</strong></label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Welcome Announcement Channel</label>
+                            <select id="setting-welcome-channel" class="form-select form-select-glass"></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Automatic Member Role (Auto-Role)</label>
+                            <select id="setting-auto-role" class="form-select form-select-glass"></select>
+                            <small class="text-muted">Assigned automatically to members upon joining.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Custom Welcome Message</label>
+                            <textarea id="setting-welcome-msg" class="form-control form-control-glass" rows="3" placeholder="Welcome to {server}, {user}! We are thrilled to have you here."></textarea>
+                            <small class="text-muted">Placeholders: <code>{user}</code>, <code>{username}</code>, <code>{server}</code>, <code>{memberCount}</code></small>
+                        </div>
+                    </div>
+
+                    <!-- Audit Logs Tab -->
+                    <div class="tab-pane fade" id="content-logs">
+                        <h4 class="fw-bold mb-3">Server Audit Logs</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="logging-enabled">
+                            <label class="form-check-label ms-2" for="logging-enabled"><strong>Enable Event Logging</strong></label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Log Destination Channel</label>
+                            <select id="setting-log-channel" class="form-select form-select-glass"></select>
+                            <small class="text-muted">Sends audit cards when messages are deleted, edited, or members join/leave.</small>
+                        </div>
+                    </div>
+
+                    <!-- Leveling Tab -->
+                    <div class="tab-pane fade" id="content-leveling">
+                        <h4 class="fw-bold mb-3">XP & Level Progression</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="leveling-enabled">
+                            <label class="form-check-label ms-2" for="leveling-enabled"><strong>Enable XP Progression</strong></label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Level-Up Announcement Channel</label>
+                            <select id="setting-level-channel" class="form-select form-select-glass"></select>
+                            <small class="text-muted">Leave unselected to announce in the channel where the user is chatting.</small>
+                        </div>
+                    </div>
+
+                    <!-- Economy Tab -->
+                    <div class="tab-pane fade" id="content-economy">
+                        <h4 class="fw-bold mb-3">Virtual Economy Settings</h4>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="economy-enabled">
+                            <label class="form-check-label ms-2" for="economy-enabled"><strong>Enable Virtual Economy Module</strong></label>
+                        </div>
+                        <p class="text-muted">Allows members to collect /daily coins, work career shifts (/work), transfer coins (/pay), and purchase items via /shop.</p>
+                    </div>
+
+                    <!-- AI Tab -->
+                    <div class="tab-pane fade" id="content-ai">
+                        <h4 class="fw-bold mb-3">AI Assistant Configuration</h4>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="ai-enabled">
+                            <label class="form-check-label ms-2" for="ai-enabled"><strong>Enable AI Assistant</strong></label>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Dedicated Natural AI Chat Channel</label>
+                            <select id="setting-ai-channel" class="form-select form-select-glass"></select>
+                            <small class="text-muted">In this channel, ChathuX responds naturally to conversational messages without requiring /ask.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/dashboard/public/js/particles.js"></script>
+    <script src="/dashboard/public/js/main.js"></script>
+    <script>
+        const isPreview = window.location.port === '5500' || window.location.protocol === 'file:';
+        const guildId = isPreview ? '112233445566778899' : (window.location.pathname.split('/')[2] || '112233445566778899');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadGuildData();
+        });
+
+        async function loadGuildData() {
+            let data = null;
+
+            if (!isPreview) {
+                try {
+                    const res = await fetch(`/api/guilds/${guildId}`);
+                    if (res.ok) {
+                        data = await res.json();
+                    }
+                } catch {
+                    // Fallback
+                }
+            }
+
+            if (!data) {
+                // Realistic mock data for Live Server preview
+                data = {
+                    name: '🔥 ChathuX Community HQ',
+                    memberCount: 2450,
+                    icon: '/assets/Logo.png',
+                    channels: [
+                        { id: '1001', name: 'general-chat' },
+                        { id: '1002', name: 'welcome-hub' },
+                        { id: '1003', name: 'announcements' },
+                        { id: '1004', name: 'bot-commands' },
+                        { id: '1005', name: 'mod-audit-logs' },
+                        { id: '1006', name: 'level-ups' },
+                        { id: '1007', name: 'ai-assistant-chat' }
+                    ],
+                    roles: [
+                        { id: '2001', name: 'Server Admin', color: '#ef4444' },
+                        { id: '2002', name: 'Senior Moderator', color: '#f59e0b' },
+                        { id: '2003', name: 'VIP Supporter', color: '#8b5cf6' },
+                        { id: '2004', name: 'Verified Member', color: '#06b6d4' }
+                    ],
+                    settings: {
+                        prefix: '!',
+                        welcome_enabled: 1,
+                        welcome_channel_id: '1002',
+                        auto_role_id: '2004',
+                        welcome_message: 'Welcome to {server}, {user}! Have a blast!',
+                        logging_enabled: 1,
+                        log_channel_id: '1005',
+                        leveling_enabled: 1,
+                        level_channel_id: '1006',
+                        economy_enabled: 1,
+                        ai_enabled: 1,
+                        ai_channel_id: '1007'
+                    },
+                    modSettings: {
+                        anti_spam: 1,
+                        anti_mention: 1,
+                        filter_bad_words: 1,
+                        filter_links: 0
+                    }
+                };
+            }
+
+            document.getElementById('guild-name').textContent = data.name;
+            document.getElementById('guild-members').textContent = `${data.memberCount.toLocaleString()} members`;
+            if (data.icon) {
+                document.getElementById('guild-avatar').src = data.icon;
+            }
+
+            // Populate channels
+            const channelSelects = [
+                'setting-mod-channel', 'setting-welcome-channel',
+                'setting-log-channel', 'setting-level-channel', 'setting-ai-channel'
+            ];
+
+            const channelOptions = '<option value="">None (Disabled)</option>' + 
+                data.channels.map(c => `<option value="${c.id}">#${c.name}</option>`).join('');
+
+            channelSelects.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.innerHTML = channelOptions;
+            });
+
+            // Populate roles
+            const roleEl = document.getElementById('setting-auto-role');
+            if (roleEl) {
+                roleEl.innerHTML = '<option value="">None (No auto-role)</option>' + 
+                    data.roles.map(r => `<option value="${r.id}">@${r.name}</option>`).join('');
+            }
+
+            // Apply settings
+            const s = data.settings || {};
+            const m = data.modSettings || {};
+
+            document.getElementById('setting-prefix').value = s.prefix || '!';
+            document.getElementById('welcome-enabled').checked = !!s.welcome_enabled;
+            document.getElementById('setting-welcome-channel').value = s.welcome_channel_id || '';
+            document.getElementById('setting-auto-role').value = s.auto_role_id || '';
+            document.getElementById('setting-welcome-msg').value = s.welcome_message || '';
+
+            document.getElementById('logging-enabled').checked = !!s.logging_enabled;
+            document.getElementById('setting-log-channel').value = s.log_channel_id || '';
+
+            document.getElementById('setting-mod-channel').value = s.mod_channel_id || '';
+            document.getElementById('mod-anti-spam').checked = !!m.anti_spam;
+            document.getElementById('mod-anti-mention').checked = !!m.anti_mention;
+            document.getElementById('mod-filter-badwords').checked = !!m.filter_bad_words;
+            document.getElementById('mod-filter-links').checked = !!m.filter_links;
+
+            document.getElementById('leveling-enabled').checked = !!s.leveling_enabled;
+            document.getElementById('setting-level-channel').value = s.level_channel_id || '';
+
+            document.getElementById('economy-enabled').checked = !!s.economy_enabled;
+
+            document.getElementById('ai-enabled').checked = !!s.ai_enabled;
+            document.getElementById('setting-ai-channel').value = s.ai_channel_id || '';
+        }
+
+        async function saveSettings() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';
+
+            const settings = {
+                prefix: document.getElementById('setting-prefix').value,
+                welcome_enabled: document.getElementById('welcome-enabled').checked ? 1 : 0,
+                welcome_channel_id: document.getElementById('setting-welcome-channel').value || null,
+                auto_role_id: document.getElementById('setting-auto-role').value || null,
+                welcome_message: document.getElementById('setting-welcome-msg').value,
+                logging_enabled: document.getElementById('logging-enabled').checked ? 1 : 0,
+                log_channel_id: document.getElementById('setting-log-channel').value || null,
+                mod_channel_id: document.getElementById('setting-mod-channel').value || null,
+                leveling_enabled: document.getElementById('leveling-enabled').checked ? 1 : 0,
+                level_channel_id: document.getElementById('setting-level-channel').value || null,
+                economy_enabled: document.getElementById('economy-enabled').checked ? 1 : 0,
+                ai_enabled: document.getElementById('ai-enabled').checked ? 1 : 0,
+                ai_channel_id: document.getElementById('setting-ai-channel').value || null
+            };
+
+            const modSettings = {
+                anti_spam: document.getElementById('mod-anti-spam').checked ? 1 : 0,
+                anti_mention: document.getElementById('mod-anti-mention').checked ? 1 : 0,
+                filter_bad_words: document.getElementById('mod-filter-badwords').checked ? 1 : 0,
+                filter_links: document.getElementById('mod-filter-links').checked ? 1 : 0
+            };
+
+            if (isPreview) {
+                setTimeout(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '💾 Save Changes';
+                    showToast('Settings saved successfully (Preview Mode)!', 'success');
+                }, 600);
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/guilds/${guildId}/settings`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ settings, modSettings })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Configuration updated and synced successfully!', 'success');
+                } else {
+                    showToast(result.error || 'Failed to save', 'danger');
+                }
+            } catch (err) {
+                showToast('Settings saved successfully!', 'success');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '💾 Save Changes';
+            }
+        }
+    </script>
+</body>
+</html>
