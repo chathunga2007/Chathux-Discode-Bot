@@ -48,8 +48,12 @@ ChathuX/
 │   │   ├── xpService.js           # Level formula, cooldowns & ASCII rank cards
 │   │   ├── economyService.js      # Accounts, streaks, work, transfers & shop
 │   │   ├── loggingService.js      # Audit log formatter & dispatcher
-│   │   └── musicService.js        # Voice connection, queue & player controls
-│   ├── commands/                  # Modular slash command definitions
+│   │   ├── musicService.js        # Voice connection, queue & player controls
+│   │   ├── giveawayService.js     # Timed giveaways, button entries & winner picks
+│   │   ├── pollService.js         # Real-time interactive polls & progress bars
+│   │   ├── afkService.js          # User AFK state tracking & mention alerts
+│   │   └── reminderService.js     # Scheduled user reminder timers
+│   ├── commands/                  # Modular slash command definitions (68 commands)
 │   ├── events/                    # Discord gateway event handlers
 │   ├── handlers/                  # Dynamic command, event & component loaders
 │   └── utils/                     # Structured logger, permissions & embeds
@@ -97,10 +101,11 @@ ChathuX/
 - **Leaderboards**: Real-time server ranking via `/leaderboard`.
 - **Role Unlocks**: Automatically awards custom roles upon reaching milestone levels.
 
-### 💰 4. Virtual Economy & Marketplace
+### 💰 4. Virtual Economy & Casino
 - **Wallet & Bank**: Multi-currency accounting with net-worth rankings.
 - **Daily Rewards**: Progressive streak multiplier.
 - **Career Shifts**: `/work` with randomized career scenarios.
+- **Casino Slots Machine**: High-stakes `/slots <bet>` mini-game with custom animated reels and multi-tier payout multipliers (Jackpot 10x, Diamonds 6x, Golden Bells 4x).
 - **Atomic Transfers**: Safe peer-to-peer coin transfers guarded by database transactions.
 - **Server Marketplace**: Server admins can configure purchasable items and roles via `/shop` and `/buy`.
 
@@ -109,7 +114,13 @@ ChathuX/
 - **Playback Controls**: `/play`, `/pause`, `/resume`, `/skip`, `/stop`, `/volume`, `/loop`.
 - **Interactive Control Buttons**: Embedded control pad (`⏯️`, `⏭️`, `⏹️`, `🔁`, `📜`) directly in the `/nowplaying` card.
 
-### 🌐 6. Glassmorphism Web Dashboard & OAuth2
+### 🎉 6. Community & Interactive Utilities
+- **Interactive Giveaways**: Timed countdowns with `/giveaway start`, `/giveaway end`, `/giveaway reroll`, interactive entry button `🎉 Enter Giveaway (X)`, and automated crypto-random winner selection.
+- **Real-Time Polls**: Dynamic percentage progress bars (`████░░ 40%`) via `/poll create` or `/poll quick`, instant button voting, and duplicate vote prevention.
+- **Smart AFK Assistant**: Set custom AFK reasons via `/afk [reason]`. ChathuX automatically notifies anyone who mentions the user and auto-clears AFK with a welcome-back message when they speak again.
+- **Automated Reminders**: Schedule self-reminders with natural time durations (`/remind <time> <task>`) via high-precision background timers.
+
+### 🌐 7. Glassmorphism Web Dashboard & OAuth2
 - **Responsive Dark UI**: Deep dark background (`#090d16`), purple/cyan neon accents, and backdrop blur.
 - **Discord OAuth2**: Secure user authentication displaying only servers where the user holds `Manage Server` or `Administrator` rights.
 - **Full Configuration Suite**: Customize welcome messages, audit log channels, auto-mod toggles, and AI channels from your web browser.
@@ -227,6 +238,10 @@ Follow these exact steps to register and configure your Discord bot:
 | **General** | `/roles` | Server roles listing with member counts |
 | **General** | `/uptime` | Displays continuous runtime since deployment |
 | **General** | `/botinfo` | Platform specifications and global telemetry |
+| **General** | `/giveaway <start\|end\|reroll>` | Interactive giveaways with timers, buttons & crypto-random winners |
+| **General** | `/poll <create\|quick>` | Real-time community voting with dynamic progress bars |
+| **General** | `/afk [reason]` | Sets AFK state with mention alerts and auto welcome-back |
+| **General** | `/remind <time> <task>` | Schedules automated timed reminder alerts |
 | **AI** | `/ask <question>` | Context-aware AI assistant dialogue |
 | **AI** | `/code <problem>` | Generates clean algorithmic code solutions |
 | **AI** | `/explain <code>` | In-depth breakdown of complex code |
@@ -253,6 +268,7 @@ Follow these exact steps to register and configure your Discord bot:
 | **Economy** | `/balance [user]` | Wallet and bank balance summary |
 | **Economy** | `/daily` | Daily reward with streak multiplier |
 | **Economy** | `/work` | Undertake career shifts to earn coins |
+| **Economy** | `/slots <bet>` | Casino slot machine gambling mini-game with win multipliers |
 | **Economy** | `/pay <user> <amount>` | Atomic peer-to-peer coin transfer |
 | **Economy** | `/shop` | Server marketplace catalog |
 | **Economy** | `/buy <item_id>` | Purchase store item |
