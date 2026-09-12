@@ -21,7 +21,11 @@ const CATEGORY_DATA = {
             '`/avatar` - Retrieve high-resolution user avatar',
             '`/roles` - List server roles and member distribution',
             '`/uptime` - Time elapsed since last process restart',
-            '`/botinfo` - Global bot statistics and deployment specs'
+            '`/botinfo` - Global bot statistics and deployment specs',
+            '`/giveaway` - Host interactive giveaways with timers & buttons',
+            '`/poll` - Launch real-time community polls with dynamic progress bars',
+            '`/afk [reason]` - Set AFK status with mention alerts & auto-clear',
+            '`/remind <time> <task>` - Set automated timed reminders'
         ]
     },
     moderation: {
@@ -72,6 +76,7 @@ const CATEGORY_DATA = {
             '`/balance [user]` - Check wallet and bank balance',
             '`/daily` - Claim daily coins with streak multipliers',
             '`/work` - Undertake work scenarios to earn currency',
+            '`/slots <bet>` - Test your luck on the casino slot machine',
             '`/pay <user> <amount>` - Secure peer-to-peer coin transfer',
             '`/shop` - View server marketplace catalog',
             '`/buy <item_id>` - Purchase item or role reward',
