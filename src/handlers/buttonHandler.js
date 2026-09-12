@@ -64,6 +64,50 @@ async function handleButtonInteraction(interaction) {
             }
         }
     }
+
+    // Giveaway Button Interaction
+    if (customId === 'giveaway_enter') {
+        const giveawayService = require('../services/giveawayService');
+        const res = giveawayService.toggleEntry(interaction.message.id, interaction.user.id);
+        if (!res.success) {
+            return interaction.reply({ content: `⚠️ ${res.reason}`, flags: MessageFlags.Ephemeral }).catch(() => {});
+        }
+
+        const updatedRow = giveawayService.buildButtonRow(res.count, false);
+        await interaction.message.edit({ components: [updatedRow] }).catch(() => {});
+
+        return interaction.reply({
+            content: res.entered
+                ? `🎉 You entered the giveaway for **${res.prize}**!`
+                : `❌ You removed your entry from the giveaway for **${res.prize}**.`,
+            flags: MessageFlags.Ephemeral
+        }).catch(() => {});
+    }
+
+    // Poll Voting Button Interaction
+    if (customId.startsWith('poll_vote_')) {
+        const parts = customId.split('_');
+        const optionIndex = parseInt(parts[parts.length - 1], 10);
+        const pollService = require('../services/pollService');
+        const res = pollService.handleVote(interaction.message.id, interaction.user.id, optionIndex);
+
+        if (!res.success) {
+            return interaction.reply({ content: `⚠️ ${res.reason}`, flags: MessageFlags.Ephemeral }).catch(() => {});
+        }
+
+        const updatedEmbed = pollService.buildPollEmbed(res.poll);
+        const updatedRows = pollService.buildButtonRows(res.poll);
+
+        await interaction.message.edit({ embeds: [updatedEmbed], components: updatedRows }).catch(() => {});
+
+        const actionText = res.action === 'removed'
+            ? `❌ Removed your vote for **${res.option}**.`
+            : res.action === 'changed'
+                ? `🔄 Changed your vote to **${res.option}**!`
+                : `✅ Voted for **${res.option}**!`;
+
+        return interaction.reply({ content: actionText, flags: MessageFlags.Ephemeral }).catch(() => {});
+    }
 }
 
 async function handleSelectMenuInteraction(interaction) {
